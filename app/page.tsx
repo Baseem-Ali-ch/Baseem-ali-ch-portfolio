@@ -32,6 +32,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
+
+// Add these interfaces at the top of your file
+  interface FormErrors {
+    name?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
+  }
+
+  interface FormData {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+  }
+
+
 // Floating Bubbles Component
 const FloatingBubbles = () => {
   const { scrollYProgress } = useScroll();
@@ -280,29 +297,80 @@ export default function Portfolio() {
     document.body.removeChild(link);
   };
 
-  const [formData, setFormData] = useState({
+  // Add validation functions
+  const validateForm = (data: FormData): FormErrors => {
+    const errors: FormErrors = {};
+
+    // Name validation - only letters and spaces
+    if (!data.name.trim()) {
+      errors.name = "Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(data.name.trim())) {
+      errors.name = "Name can only contain letters";
+    }
+
+    // Email validation
+    if (!data.email.trim()) {
+    errors.email = "Email is required";
+  } else if (!/^[a-zA-Z0-9._-]+@gmail\.com$/.test(data.email.trim())) {
+    errors.email = "Please enter a valid Gmail address";
+  }
+
+    // Subject validation
+    if (!data.subject.trim()) {
+      errors.subject = "Subject is required";
+    }
+
+    // Message validation
+    if (!data.message.trim()) {
+      errors.message = "Message is required";
+    } else if (data.message.trim().length < 10) {
+      errors.message = "Message must be at least 10 characters long";
+    }
+
+    return errors;
+  };
+
+  // Update your component with error handling
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
+    // Clear error when user starts typing
+    if (errors[e.target.id as keyof FormErrors]) {
+      setErrors({
+        ...errors,
+        [e.target.id]: undefined,
+      });
+    }
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setSubmitStatus("");
 
+    // Validate form
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      // Method 1: Using EmailJS (Recommended - Easy setup)
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
@@ -314,6 +382,7 @@ export default function Portfolio() {
       if (response.ok) {
         setSubmitStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
+        setErrors({});
       } else {
         setSubmitStatus("error");
       }
@@ -1051,8 +1120,13 @@ export default function Portfolio() {
                               value={formData.name}
                               onChange={handleChange}
                               placeholder="Your name"
-                              required
+                              className={errors.name ? "border-red-500" : ""}
                             />
+                            {errors.name && (
+                              <span className="text-red-500 text-sm mt-1">
+                                {errors.name}
+                              </span>
+                            )}
                           </motion.div>
                           <motion.div whileFocus={{ scale: 1.02 }}>
                             <Label htmlFor="email">Email</Label>
@@ -1062,8 +1136,13 @@ export default function Portfolio() {
                               value={formData.email}
                               onChange={handleChange}
                               placeholder="your@email.com"
-                              required
+                              className={errors.email ? "border-red-500" : ""}
                             />
+                            {errors.email && (
+                              <span className="text-red-500 text-sm mt-1">
+                                {errors.email}
+                              </span>
+                            )}
                           </motion.div>
                         </div>
                         <motion.div whileFocus={{ scale: 1.02 }}>
@@ -1073,8 +1152,13 @@ export default function Portfolio() {
                             value={formData.subject}
                             onChange={handleChange}
                             placeholder="What's this about?"
-                            required
+                            className={errors.subject ? "border-red-500" : ""}
                           />
+                          {errors.subject && (
+                            <span className="text-red-500 text-sm mt-1">
+                              {errors.subject}
+                            </span>
+                          )}
                         </motion.div>
                         <motion.div whileFocus={{ scale: 1.02 }}>
                           <Label htmlFor="message">Message</Label>
@@ -1084,8 +1168,13 @@ export default function Portfolio() {
                             onChange={handleChange}
                             placeholder="Your message..."
                             rows={5}
-                            required
+                            className={errors.message ? "border-red-500" : ""}
                           />
+                          {errors.message && (
+                            <span className="text-red-500 text-sm mt-1">
+                              {errors.message}
+                            </span>
+                          )}
                         </motion.div>
 
                         {/* Status Messages */}
