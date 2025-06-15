@@ -1,20 +1,20 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
-}
+  title: "Baseem Ali C H",
+  keywords: ["baseem", "ali", "c h", "baseem ali c h"],
+  description: "Portfolio of Baseem Ali C H",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body>{children}</body>
     </html>
-  )
+  );
 }
