@@ -14,6 +14,7 @@ import {
   Twitter,
   ExternalLink,
   ChevronDown,
+  NotebookPen,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -1144,21 +1145,28 @@ export default function Portfolio() {
                 <div className="flex gap-4">
                   <motion.div whileHover={{ scale: 1.2, rotate: 5 }}>
                     <Button variant="outline" size="icon" asChild>
-                      <Link href="https://github.com/Baseem-Ali-ch">
+                      <Link target="_blank" href="https://github.com/Baseem-Ali-ch">
                         <Github className="h-4 w-4" />
                       </Link>
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.2, rotate: -5 }}>
                     <Button variant="outline" size="icon" asChild>
-                      <Link href="https://www.linkedin.com/in/baseem-ali-ch-bbb21b2a8/">
+                      <Link target="_blank" href="https://www.linkedin.com/in/baseem-ali-ch-bbb21b2a8/">
                         <Linkedin className="h-4 w-4" />
                       </Link>
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.2, rotate: 5 }}>
                     <Button variant="outline" size="icon" asChild>
-                      <Link href="mailto:baseemch43@gmail.com">
+                      <Link target="_blank" href="https://medium.com/me/stories/public">
+                        <NotebookPen className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.2, rotate: 5 }}>
+                    <Button variant="outline" size="icon" asChild>
+                      <Link target="_blank" href="mailto:baseemch43@gmail.com">
                         <Mail className="h-4 w-4" />
                       </Link>
                     </Button>
