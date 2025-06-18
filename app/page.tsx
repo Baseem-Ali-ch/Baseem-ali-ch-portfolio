@@ -15,6 +15,8 @@ import {
   ExternalLink,
   ChevronDown,
   NotebookPen,
+  Clock,
+  Calendar,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -145,56 +147,78 @@ const ScrollIndicators = () => {
     restDelta: 0.001,
   });
 
+  const sections = [
+    { id: "about", label: "About" },
+    { id: "skills", label: "Skills" },
+    { id: "projects", label: "Projects" },
+    { id: "blog", label: "Blog" },
+    { id: "education", label: "Education" },
+    { id: "contact", label: "Contact" },
+  ];
+
   const getBackgroundColor = (index: number, scrollYProgress: any) => {
+    const sectionCount = sections.length;
+
+    // Calculate the scroll range for each section
+    const sectionStart = index / sectionCount;
+    const sectionEnd = (index + 1) / sectionCount;
+
+    // Add some overlap for smoother transitions
+    const fadeStart = Math.max(0, sectionStart - 0.05);
+    const activeStart = sectionStart;
+    const activeEnd = sectionEnd;
+    const fadeEnd = Math.min(1, sectionEnd + 0.05);
+
     return useTransform(
       scrollYProgress,
-      [index * 0.2, (index + 1) * 0.2],
-      ["transparent", "#3b82f6"]
+      [fadeStart, activeStart, activeEnd, fadeEnd],
+      ["transparent", "#3b82f6", "#3b82f6", "transparent"]
     );
   };
 
-  const backgroundColor0 = getBackgroundColor(0, scrollYProgress);
-  const backgroundColor1 = getBackgroundColor(1, scrollYProgress);
-  const backgroundColor2 = getBackgroundColor(2, scrollYProgress);
-  const backgroundColor3 = getBackgroundColor(3, scrollYProgress);
-  const backgroundColor4 = getBackgroundColor(4, scrollYProgress);
+  const backgroundColors = sections.map((_, index) =>
+    getBackgroundColor(index, scrollYProgress)
+  );
 
   return (
     <>
-      {/* Top Progress Bar */}
+      {/* Progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 origin-left"
         style={{ scaleX }}
       />
 
-      {/* Side Progress Circles */}
+      {/* Section indicators */}
       <div className="fixed right-8 top-1/2 transform -translate-y-1/2 space-y-4 z-40">
-        {["about", "skills", "projects", "education", "contact"].map(
-          (section, index) => (
-            <motion.div
-              key={section}
-              className="w-3 h-3 rounded-full border-2 border-gray-300 dark:border-gray-600 cursor-pointer transition-colors duration-300"
-              style={{
-                backgroundColor:
-                  index === 0
-                    ? backgroundColor0
-                    : index === 1
-                    ? backgroundColor1
-                    : index === 2
-                    ? backgroundColor2
-                    : index === 3
-                    ? backgroundColor3
-                    : backgroundColor4,
-              }}
-              onClick={() =>
-                document
-                  .getElementById(section)
-                  ?.scrollIntoView({ behavior: "smooth" })
+        {sections.map((section, index) => (
+          <motion.div
+            key={section.id}
+            className="group relative cursor-pointer"
+            onClick={() => {
+              const element = document.getElementById(section.id);
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
               }
-              whileHover={{ scale: 1.5 }}
+            }}
+            whileHover={{ scale: 1.2 }}
+          >
+            {/* Indicator dot */}
+            <motion.div
+              className="w-3 h-3 rounded-full border-2 border-gray-300 dark:border-gray-600 transition-colors duration-300"
+              style={{
+                backgroundColor: backgroundColors[index],
+              }}
             />
-          )
-        )}
+
+            {/* Tooltip */}
+            <div className="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-3 py-1 rounded-md text-sm whitespace-nowrap">
+                {section.label}
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-l-gray-900 dark:border-l-gray-100"></div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </>
   );
@@ -551,6 +575,28 @@ export default function Portfolio() {
       tech: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "MongoDB"],
       demo: "#",
       github: "https://github.com/Baseem-Ali-ch/FurnSpace",
+    },
+  ];
+
+  {
+    /*  Articles data*/
+  }
+  const articles = [
+    {
+      title: "My Journey with Node.js: From Beginner to Full-Stack Developer",
+      image: "/nodejs.jpg?height=300&width=400",
+      url: "https://medium.com/@basalich43/my-journey-with-node-js-122a1ad90316",
+      publishedDate: "Jun 18, 2025",
+      readTime: "4 min read",
+      tags: ["Node.js", "JavaScript", "Backend", "Full-Stack", "MediumDev"],
+    },
+    {
+      title: "The Tale of JavaScript: The Magical Language ",
+      image: "/javascript.png",
+      url: "https://medium.com/@basalich43/the-tale-of-javascript-the-magical-language-%EF%B8%8F-475a749461a6",
+      publishedDate: "Feb 15, 2025",
+      readTime: "2 min read",
+      tags: ["JavaScript", "Backend", "Full-Stack", "MediumDev"],
     },
   ];
 
@@ -918,6 +964,103 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* Blog & Articles Section */}
+      <section id="blog" className="py-20 bg-gray-50 dark:bg-gray-800 relative">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="max-w-6xl mx-auto"
+          >
+            <motion.h2
+              variants={fadeInUp}
+              className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white"
+            >
+              Blogs & Articles
+            </motion.h2>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {articles.map((article, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  whileHover={{ y: -20, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="group"
+                >
+                  <Card className="h-full overflow-hidden hover:shadow-2xl transition-all duration-300">
+                    <div className="relative overflow-hidden">
+                      <motion.div whileHover={{ scale: 1.1 }}>
+                        <Image
+                          src={article.image || "/placeholder.svg"}
+                          alt={article.title}
+                          width={400}
+                          height={240}
+                          className="w-full h-48 object-cover"
+                        />
+                      </motion.div>
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <motion.div
+                          initial={{ y: 20, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ delay: 0.1 }}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"
+                        >
+                          <Button size="sm" variant="secondary" asChild>
+                            <Link
+                              href={article.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Read Article
+                            </Link>
+                          </Button>
+                        </motion.div>
+                      </div>
+                    </div>
+                    <CardHeader>
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+                          <Calendar className="h-4 w-4 mr-1" />
+                          {article.publishedDate}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                          <Clock className="h-4 w-4 mr-1" />
+                          {article.readTime}
+                        </div>
+                      </div>
+                      <CardTitle className="text-xl line-clamp-2">
+                        {article.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {article.tags.map((tag, tagIndex) => (
+                          <motion.div
+                            key={tag}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: tagIndex * 0.1 }}
+                          >
+                            <Badge variant="outline" className="text-xs">
+                              {tag}
+                            </Badge>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Education Section */}
       <section
         id="education"
@@ -1145,21 +1288,30 @@ export default function Portfolio() {
                 <div className="flex gap-4">
                   <motion.div whileHover={{ scale: 1.2, rotate: 5 }}>
                     <Button variant="outline" size="icon" asChild>
-                      <Link target="_blank" href="https://github.com/Baseem-Ali-ch">
+                      <Link
+                        target="_blank"
+                        href="https://github.com/Baseem-Ali-ch"
+                      >
                         <Github className="h-4 w-4" />
                       </Link>
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.2, rotate: -5 }}>
                     <Button variant="outline" size="icon" asChild>
-                      <Link target="_blank" href="https://www.linkedin.com/in/baseem-ali-ch-bbb21b2a8/">
+                      <Link
+                        target="_blank"
+                        href="https://www.linkedin.com/in/baseem-ali-ch-bbb21b2a8/"
+                      >
                         <Linkedin className="h-4 w-4" />
                       </Link>
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.2, rotate: 5 }}>
                     <Button variant="outline" size="icon" asChild>
-                      <Link target="_blank" href="https://medium.com/me/stories/public">
+                      <Link
+                        target="_blank"
+                        href="https://medium.com/me/stories/public"
+                      >
                         <NotebookPen className="h-4 w-4" />
                       </Link>
                     </Button>
