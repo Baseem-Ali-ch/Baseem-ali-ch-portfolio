@@ -32,22 +32,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-
 // Add these interfaces at the top of your file
-  interface FormErrors {
-    name?: string;
-    email?: string;
-    subject?: string;
-    message?: string;
-  }
+interface FormErrors {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
 
-  interface FormData {
-    name: string;
-    email: string;
-    subject: string;
-    message: string;
-  }
-
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 // Floating Bubbles Component
 const FloatingBubbles = () => {
@@ -310,10 +308,10 @@ export default function Portfolio() {
 
     // Email validation
     if (!data.email.trim()) {
-    errors.email = "Email is required";
-  } else if (!/^[a-zA-Z0-9._-]+@gmail\.com$/.test(data.email.trim())) {
-    errors.email = "Please enter a valid Gmail address";
-  }
+      errors.email = "Email is required";
+    } else if (!/^[a-zA-Z0-9._-]+@gmail\.com$/.test(data.email.trim())) {
+      errors.email = "Please enter a valid Gmail address";
+    }
 
     // Subject validation
     if (!data.subject.trim()) {
@@ -421,16 +419,27 @@ export default function Portfolio() {
   // *Projects
   const projects = [
     {
+      title: "VoxScript",
+      description:
+        "This project is a audio transcription system designed to instantly convert spoken audio into accurate text, supporting a range of languages. Whether it's recorded audio, the system ensures efficient speech-to-text conversion.",
+      image: "/voxscript.png?height=300&width=400",
+      tech: ["Next.js", "Tailwind CSS", "GCS Bucket", "STT API", "Vercel"],
+      demo: "#",
+      github: "https://github.com/Baseem-Ali-ch/VoxScript",
+      status: "in-progress",
+    },
+    {
       title: "TripTales",
       description:
         "A travel planning application that allows users to create, share, and discover travel itineraries.",
-      image: "/triptales.png?height=300&width=400",
+      image: "/triptales-dark.png?height=300&width=400",
       tech: ["Next.js", "Tailwind CSS", "Prisma", "PostgreSQL", "Vercel"],
       demo: "https://trip-tales-nu.vercel.app/",
       github: "https://github.com/Baseem-Ali-ch/TripTales",
+      status: "in-progress",
     },
     {
-      title: "Baniking Management App",
+      title: "Banking Management App",
       description:
         "A banking management application with user authentication, account management, and transaction history.",
       image: "/banking-app.png?height=300&width=400",
@@ -439,16 +448,17 @@ export default function Portfolio() {
       github: "https://github.com/Baseem-Ali-ch/Banking-app",
     },
     {
-      title: "Plate Up Recipe sharing App",
+      title: "Plate Up",
       description:
         "A recipe sharing platform where users can create, share, and discover recipes.",
       image: "/plateup.png?height=300&width=400",
       tech: ["Next.js", "Tailwind CSS", "Prisma", "PostgreSQL", "Vercel"],
       demo: "https://plate-up-opal.vercel.app/",
       github: "https://github.com/Baseem-Ali-ch/plate-up",
+      status: "in-progress",
     },
     {
-      title: "JukeBoz Verses Music App",
+      title: "JukeBoz Verses",
       description:
         "A song lyrics application, playlist management, add song lyrics.",
       image: "/jukebox.png?height=300&width=400",
@@ -457,7 +467,7 @@ export default function Portfolio() {
       github: "https://github.com/Baseem-Ali-ch/jukebox-verses",
     },
     {
-      title: "BizFlow Time Tracking App",
+      title: "BizFlow",
       description:
         "A time tracking application for businesses to manage employee hours, projects, and productivity.",
       image: "/bizflow.png?height=300&width=400",
@@ -472,6 +482,7 @@ export default function Portfolio() {
       ],
       demo: "https://biz-flow-nine.vercel.app/",
       github: "https://github.com/Baseem-Ali-ch/BizFlow",
+      status: "in-progress",
     },
     {
       title: "DealDash E-Commerce Platform",
@@ -828,7 +839,27 @@ export default function Portfolio() {
                       </div>
                     </div>
                     <CardHeader>
-                      <CardTitle className="text-xl">{project.title}</CardTitle>
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-xl">
+                          {project.title}
+                        </CardTitle>
+                        {project.status === "in-progress" && (
+                          <Badge
+                            variant="secondary"
+                            className="bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20"
+                          >
+                            In Progress
+                          </Badge>
+                        )}
+                        {project.status === "planned" && (
+                          <Badge
+                            variant="secondary"
+                            className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20"
+                          >
+                            Planned
+                          </Badge>
+                        )}
+                      </div>
                       <CardDescription>{project.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -881,13 +912,13 @@ export default function Portfolio() {
 
               <div className="space-y-12">
                 <motion.div
-                  variants={slideInLeft}
-                  whileHover={{ x: 10, scale: 1.02 }}
+                  variants={slideInRight}
+                  whileHover={{ x: -10, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
                   className="relative"
                 >
                   {/* Timeline dot */}
-                  <div className="absolute -left-2 top-8 w-4 h-4 bg-blue-500 rounded-full border-4 border-white dark:border-gray-900 shadow-lg hidden md:block z-10"></div>
+                  <div className="absolute -left-2 top-8 w-4 h-4 bg-fuchsia-500 rounded-full border-4 border-white dark:border-gray-900 shadow-lg hidden md:block z-10"></div>
 
                   <div className="md:ml-16">
                     <Card className="hover:shadow-xl transition-all duration-300">
@@ -895,21 +926,30 @@ export default function Portfolio() {
                         <div className="flex justify-between items-start">
                           <div>
                             <CardTitle className="text-xl">
-                              Higher Secondary Education (Plus Two)
+                              Full Stack Freelancer
                             </CardTitle>
                             <CardDescription className="text-lg">
-                              PMSAMAHSS, Malappuram, Kerala
+                              Remote, Malappuram, Kerala
                             </CardDescription>
                           </div>
                           <motion.div whileHover={{ scale: 1.1 }}>
-                            <Badge variant="outline">2018 - 2020</Badge>
+                            <Badge variant="outline">2025 - Present</Badge>
                           </motion.div>
                         </div>
                       </CardHeader>
                       <CardContent>
                         <p className="text-gray-600 dark:text-gray-300">
-                          Completed Plus Two in <b>Humanities</b>, building a
-                          strong foundation in <b>research skills</b>
+                          Following the bootcamp, I embarked on a 6-month
+                          freelance journey, deepening my expertise in
+                          cutting-edge technologies like{" "}
+                          <b>Next.js, Prisma, and Vercel</b>. During this
+                          period, I successfully developed a major{" "}
+                          <b>banking management application</b> from scratch.
+                          Additionally, I contributed significantly to the
+                          development of an <b>accounting software</b> and an
+                          <b>e-commerce platform</b>, both built with{" "}
+                          <b>Next.js</b>, showcasing my ability to deliver
+                          robust and scalable web solutions.
                         </p>
                       </CardContent>
                     </Card>
@@ -967,13 +1007,13 @@ export default function Portfolio() {
                 </motion.div>
 
                 <motion.div
-                  variants={slideInRight}
-                  whileHover={{ x: -10, scale: 1.02 }}
+                  variants={slideInLeft}
+                  whileHover={{ x: 10, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
                   className="relative"
                 >
                   {/* Timeline dot */}
-                  <div className="absolute -left-2 top-8 w-4 h-4 bg-fuchsia-500 rounded-full border-4 border-white dark:border-gray-900 shadow-lg hidden md:block z-10"></div>
+                  <div className="absolute -left-2 top-8 w-4 h-4 bg-blue-500 rounded-full border-4 border-white dark:border-gray-900 shadow-lg hidden md:block z-10"></div>
 
                   <div className="md:ml-16">
                     <Card className="hover:shadow-xl transition-all duration-300">
@@ -981,30 +1021,21 @@ export default function Portfolio() {
                         <div className="flex justify-between items-start">
                           <div>
                             <CardTitle className="text-xl">
-                              Full Stack Freelancer
+                              Higher Secondary Education (Plus Two)
                             </CardTitle>
                             <CardDescription className="text-lg">
-                              Remote, Malappuram, Kerala
+                              PMSAMAHSS, Malappuram, Kerala
                             </CardDescription>
                           </div>
                           <motion.div whileHover={{ scale: 1.1 }}>
-                            <Badge variant="outline">2025 - Present</Badge>
+                            <Badge variant="outline">2018 - 2020</Badge>
                           </motion.div>
                         </div>
                       </CardHeader>
                       <CardContent>
                         <p className="text-gray-600 dark:text-gray-300">
-                          Following the bootcamp, I embarked on a 6-month
-                          freelance journey, deepening my expertise in
-                          cutting-edge technologies like{" "}
-                          <b>Next.js, Prisma, and Vercel</b>. During this
-                          period, I successfully developed a major{" "}
-                          <b>banking management application</b> from scratch.
-                          Additionally, I contributed significantly to the
-                          development of an <b>accounting software</b> and an
-                          <b>e-commerce platform</b>, both built with{" "}
-                          <b>Next.js</b>, showcasing my ability to deliver
-                          robust and scalable web solutions.
+                          Completed Plus Two in <b>Humanities</b>, building a
+                          strong foundation in <b>research skills</b>
                         </p>
                       </CardContent>
                     </Card>
