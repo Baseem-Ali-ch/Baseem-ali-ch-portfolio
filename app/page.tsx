@@ -509,8 +509,8 @@ export default function Portfolio() {
         "A recipe sharing platform where users can create, share, and discover recipes.",
       image: "/plateup.png?height=300&width=400",
       tech: ["Next.js", "Tailwind CSS", "Prisma", "PostgreSQL", "Vercel"],
-      demo: "https://plate-up-opal.vercel.app/",
-      github: "https://github.com/Baseem-Ali-ch/plate-up",
+      demo: "https://plate-up-kappa.vercel.app/",
+      github: "https://github.com/Baseem-Ali-ch/PlateUp",
       status: "in-progress",
     },
     {
@@ -1016,7 +1016,7 @@ export default function Portfolio() {
                               rel="noopener noreferrer"
                             >
                               <ExternalLink className="h-4 w-4 mr-2" />
-                              Read Article
+                              Read
                             </Link>
                           </Button>
                         </motion.div>
