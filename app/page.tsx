@@ -511,7 +511,6 @@ export default function Portfolio() {
       tech: ["Next.js", "Tailwind CSS", "Prisma", "PostgreSQL", "Vercel"],
       demo: "https://plate-up-kappa.vercel.app/",
       github: "https://github.com/Baseem-Ali-ch/PlateUp",
-      status: "in-progress",
     },
     {
       title: "JukeBoz Verses",
