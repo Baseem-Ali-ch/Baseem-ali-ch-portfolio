@@ -480,9 +480,8 @@ export default function Portfolio() {
         "This project is a audio transcription system designed to instantly convert spoken audio into accurate text, supporting a range of languages. Whether it's recorded audio, the system ensures efficient speech-to-text conversion.",
       image: "/voxscript.png?height=300&width=400",
       tech: ["Next.js", "Tailwind CSS", "GCS Bucket", "STT API", "Vercel"],
-      demo: "#",
-      github: "https://github.com/Baseem-Ali-ch/VoxScript",
-      status: "in-progress",
+      demo: "https://vox-script-stt.vercel.app/",
+      github: "https://github.com/Baseem-Ali-ch/vox-script-stt",
     },
     {
       title: "TripTales",
@@ -894,7 +893,7 @@ export default function Portfolio() {
                           className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"
                         >
                           <Button size="sm" variant="secondary" asChild>
-                            <Link href={project.demo}>
+                            <Link target="_blank" href={project.demo}>
                               <ExternalLink className="h-4 w-4 mr-2" />
                               Demo
                             </Link>
@@ -907,7 +906,7 @@ export default function Portfolio() {
                           className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200"
                         >
                           <Button size="sm" variant="secondary" asChild>
-                            <Link href={project.github}>
+                            <Link target="_blank" href={project.github}>
                               <Github className="h-4 w-4 mr-2" />
                               Code
                             </Link>
@@ -1466,7 +1465,7 @@ export default function Portfolio() {
             whileInView={{ opacity: 1 }}
             className="text-gray-400"
           >
-            © 2024 Baseem Ali. All rights reserved
+            © 2025 Baseem Ali. All rights reserved
           </motion.p>
         </div>
       </footer>
